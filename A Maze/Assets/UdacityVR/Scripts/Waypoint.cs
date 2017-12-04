@@ -104,13 +104,13 @@ public class Waypoint : MonoBehaviour
 			default:
 				break;
 		}
-
+        
+        
 		gameObject.GetComponentInChildren<MeshRenderer>().material.color 	= _color;
 		gameObject.transform.localScale 									= Vector3.one * _scale;
 
 		_animated_lerp														= Mathf.Abs(Mathf.Cos(Time.time * scale_animation));
 	}
-
 
 	public void Enter()
 	{
@@ -130,7 +130,7 @@ public class Waypoint : MonoBehaviour
 		
 		_audio_source.Play();
 
-		Camera.main.transform.parent.transform.position = gameObject.transform.position;
+		//Camera.main.transform.parent.transform.position = gameObject.transform.position;
 	}
 
 
