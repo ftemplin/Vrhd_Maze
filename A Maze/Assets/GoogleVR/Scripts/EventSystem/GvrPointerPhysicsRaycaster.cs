@@ -59,23 +59,23 @@ public class GvrPointerPhysicsRaycaster : GvrBasePointerRaycaster {
 
     public void Update()
     {
-        //If we press the left mouse button.
+        //if left mouse pressed button
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Ray ray = new Ray(transform.position, transform.forward);
-            var hitResult = Physics.RaycastAll(ray, 500);
+            Ray ray = new Ray(Camera.main.transform.parent.transform.position, Camera.main.transform.rotation.eulerAngles);
+            var hitResult = Physics.RaycastAll(ray, 25);
             for (int i = 0; i < hitResult.Length; ++i)
             {
-                //The Object the raycast hit is a Waypoint
                 if (hitResult[i].transform.CompareTag("Waypoint"))
                 {
-                    Camera.main.transform.parent.transform.position = hitResult[i].transform.position;
+                    //Camera.main.transform.parent.transform.position = hitResult[i].transform.position;
                 }
+
             }
         }
     }
 
-  public int MaxRaycastHits {
+    public int MaxRaycastHits {
     get {
       return maxRaycastHits;
     }
