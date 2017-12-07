@@ -57,19 +57,65 @@ public class GvrPointerPhysicsRaycaster : GvrBasePointerRaycaster {
   /// Used to sort the hits by distance.
   private HitComparer hitComparer = new HitComparer();
 
+    private Waypoint lastWaypoint;
+
     public void Update()
     {
+
+        var hit = new RaycastHit();
+        Ray ray = new Ray(transform.position, transform.forward);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.transform.CompareTag("Waypoint"))
+            {
+                lastWaypoint = hit.transform.GetComponent<Waypoint>();
+                lastWaypoint.Enter();
+            }
+        }
+
         //If we press the left mouse button.
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Ray ray = new Ray(transform.position, transform.forward);
-            var hitResult = Physics.RaycastAll(ray, 500);
-            for (int i = 0; i < hitResult.Length; ++i)
+            if (Physics.Raycast(ray, out hit))
             {
                 //The Object the raycast hit is a Waypoint
-                if (hitResult[i].transform.CompareTag("Waypoint"))
+                if (hit.transform.CompareTag("Waypoint"))
                 {
-                    Camera.main.transform.parent.transform.position = hitResult[i].transform.position;
+                    var waypoint = hit.transform.GetComponent<Waypoint>();
+                    waypoint.Clicked();
+                    Camera.main.transform.parent.transform.position = hit.transform.position;
+                }
+                else if (hit.transform.CompareTag("Pickup"))
+                {
+
+                    var coin = hit.transform.gameObject.GetComponent<Coin>();
+                    if (coin)
+                    {
+                        coin.OnCoinClicked();
+                    }
+
+                    var key = hit.transform.gameObject.GetComponent<Key>();
+                    if (key)
+                    {
+                        key.OnKeyClicked();
+                    }
+                }
+                else if (hit.transform.CompareTag("Door"))
+                {
+                    var door = hit.transform.gameObject.GetComponent<Door>();
+                    if (door)
+                    {
+                        door.OnDoorClicked();
+                    }
+                }
+                else if (hit.transform.name == "SignPost")
+                {
+                    var signPost = hit.transform.gameObject.GetComponent<SignPost>();
+                    if (signPost)
+                    {
+                        signPost.ResetScene();
+                    }
                 }
             }
         }

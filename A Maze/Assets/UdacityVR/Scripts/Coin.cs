@@ -5,11 +5,15 @@ using UnityEngine;
 public class Coin : MonoBehaviour 
 {
     //Create a reference to the CoinPoofPrefab
+    public GameObject CoinPoofPrefab;
 
     public void OnCoinClicked() {
         // Instantiate the CoinPoof Prefab where this coin is located
+        var coinPoof = Instantiate(CoinPoofPrefab, transform.position, Quaternion.Euler(-90,0,0), transform.parent);
         // Make sure the poof animates vertically
+        
         // Destroy this coin. Check the Unity documentation on how to use Destroy
+        Destroy(gameObject);
     }
 
 }
